@@ -20,6 +20,21 @@ RUN apt-get install -y \
     libreoffice-l10n-de 
 
 
+# Flanders fonts
+RUN mkdir /usr/share/fonts/truetype/flanders
+
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-sans-bold.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-sans-light.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-sans-medium.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-sans-regular.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-serif-bold.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-serif-light.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-serif-medium.ttf /usr/share/fonts/truetype/flanders
+ADD https://d1l6j3bn1os9t0.cloudfront.net/3.latest/fonts/flanders/flanders-serif-regular.ttf /usr/share/fonts/truetype/flanders
+
+RUN fc-cache -fv
+
+
 RUN python3 -m pip install unoserver
 
 
