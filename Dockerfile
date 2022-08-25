@@ -47,4 +47,4 @@ ENV UNO_PATH "/usr/lib/libreoffice/program"
 # (which is 3.8?)
 ENV PYTHONPATH "/usr/lib/libreoffice/program:/usr/lib/python3/dist-packages:$PYTHONPATH"
 
-CMD unoserver --daemon; /start.sh
+CMD unoserver --daemon; sleep 10; /start.sh
