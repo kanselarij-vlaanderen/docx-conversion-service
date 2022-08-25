@@ -11,6 +11,15 @@ RUN apt-get update \
     && apt-get remove -y libreoffice-gnome \
     && apt-get autoremove -y
 
+
+# Libreoffice language packs (not sure if required for pdf conversion)
+RUN apt-get install -y \
+    libreoffice-l10n-en-gb \
+    libreoffice-l10n-nl \
+    libreoffice-l10n-fr \
+    libreoffice-l10n-de 
+
+
 RUN python3 -m pip install unoserver
 
 
