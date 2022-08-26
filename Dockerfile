@@ -21,6 +21,13 @@ RUN apt-get install -y \
     libreoffice-l10n-de 
 
 
+# Microsoft fonts (used by the administration)
+RUN apt-get install -y software-properties-common && \
+    apt-add-repository contrib && \
+    apt-get update && \
+    apt-get install -y ttf-mscorefonts-installer
+
+
 # Flanders fonts
 RUN mkdir /usr/share/fonts/truetype/flanders
 
