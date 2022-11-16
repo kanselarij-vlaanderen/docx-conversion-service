@@ -1,8 +1,7 @@
 from datetime import datetime
 import os.path
 from flask import g, json, request, make_response, redirect
-from helpers import logger, generate_uuid
-from sudo_query import query, update # !
+from helpers import logger, generate_uuid, query, update, error
 from .config import UNOSERVER_HOST, UNOSERVER_PORT, FILE_RESOURCE_BASE_URI, JSONAPI_FILES_TYPE
 from lib.query_util import result_to_records
 from lib.file import construct_insert_file_query, \
@@ -12,9 +11,6 @@ from lib.file import construct_insert_file_query, \
     file_to_shared_uri
 from lib.file_provenance import construct_set_file_source
 from unoserver import converter
-
-
-TEMPORARY_SUDO_GRAPH = "http://mu.semte.ch/graphs/organizations/kanselarij"
 
 # Note that using a "/share" path here assumes that the share subfolder is the same between unoserver and file converter ...
 conv = converter.UnoConverter(UNOSERVER_HOST, UNOSERVER_PORT)
