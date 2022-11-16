@@ -68,7 +68,8 @@ PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
 PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
 PREFIX nie: <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#>
 PREFIX dbpedia: <http://dbpedia.org/ontology/>
-SELECT (?file_uri AS ?uri) ?uuid ?name ?size ?extension ?physicalFile
+PREFIX dct: <http://purl.org/dc/terms/>
+SELECT (?file_uri AS ?uri) ?uuid ?name ?size ?extension ?mimeType ?physicalFile
 WHERE {
     GRAPH $graph {
         $file_uri a nfo:FileDataObject ;
@@ -76,6 +77,7 @@ WHERE {
             nfo:fileName ?name ;
             nfo:fileSize ?size ;
             dbpedia:fileExtension ?extension ;
+            dct:format ?mimeType ;
             ^nie:dataSource ?physicalFile .
         BIND($file_uri AS ?file_uri)
         ?physicalFile a nfo:FileDataObject .
