@@ -16,9 +16,24 @@ from unoserver import converter
 conv = converter.UnoConverter(UNOSERVER_HOST, UNOSERVER_PORT)
 
 @app.route("/files/<file_id>/convert", methods = ["POST"])
-def pieces_get(file_id):
-    file_uri = result_to_records(query(construct_get_file_by_id(file_id, TEMPORARY_SUDO_GRAPH)))[0]["uri"]
-    file_details = result_to_records(query(construct_get_file_query(file_uri, TEMPORARY_SUDO_GRAPH)))[0]
+def convert_file(file_id):
+    try:
+        file_uri = result_to_records(query(construct_get_file_by_id(file_id)))[0]["uri"]
+    except (IndexError, KeyError):
+        return error("Source file not found", 404, detail=f"No file was found for id {file_id}")
+
+    file_details = result_to_records(query(construct_get_file_query(file_uri)))[0]
+    
+    # Sometimes, the file service is unable to determine a more precise MIME type,
+    # so we also want to support octet-stream
+    supported_mime_types = [
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/octet-stream",
+    ]
+    src_mime = file_details["mimeType"]
+    if not any(mime_type in src_mime for mime_type in supported_mime_types):
+        return error("Unsupported source file MIME type", 400, detail=f"Cannot convert file with id {file_id} because it has an unspported MIME type. MIME type of file: {src_mime}. Supported MIME types: {','.join(supported_mime_types)}")
 
     src_path = shared_uri_to_path(file_details["physicalFile"])
     target_uuid = generate_uuid()
@@ -27,7 +42,12 @@ def pieces_get(file_id):
     target_uri = file_to_shared_uri(target_filename)
     target_path = shared_uri_to_path(target_uri)
 
-    conv.convert(inpath=src_path, outpath=target_path, convert_to=target_ext)
+    try:
+        conv.convert(inpath=src_path, outpath=target_path, convert_to=target_ext)
+    except Exception as e:
+        logger.warn(f"Converting {src_path} to PDF threw an exception. Sending 400 to client. Exception traceback:")
+        logger.exception(e)
+        return error("Conversion failed", 400, detail=f"Conversion of file with id {file_id} failed")
 
     file = {
         "uuid": generate_uuid(),
@@ -43,8 +63,8 @@ def pieces_get(file_id):
         "uuid": target_uuid,
         "name": target_filename
     }
-    update(construct_insert_file_query(file, physical_file, TEMPORARY_SUDO_GRAPH))
-    update(construct_set_file_source(file["uri"], file_uri, TEMPORARY_SUDO_GRAPH))
+    update(construct_insert_file_query(file, physical_file))
+    update(construct_set_file_source(file["uri"], file_uri))
 
     data = [{
         "type": JSONAPI_FILES_TYPE,
