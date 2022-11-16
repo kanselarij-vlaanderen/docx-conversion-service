@@ -1,25 +1,63 @@
-# File conversion service
+# DOCX conversion service
 
-A service that can convert `docx` to `pdf` files through a HTTP call.
+A microservice that converts `docx` files to `pdf` files and stores the converted file as a `derived-file` in the database.
 
-```
-curl -X POST http://localhost:7789/files/6304c8357801f1000d000002/convert
-```
 
-### compose config for development
+## Tutorials
+### Add the docx-conversion-service to a stack
+Add the following snippet to your `docker-compose.yml` file to include the DOCX conversion service in your project.
 
 ```yml
-file-conversion:
-  build: /path/to/file-conversion-service
-  environment:
-    MODE: "development"
-    LOG_LEVEL: "DEBUG"
+docx-conversion:
+  image: kanselarij/docx-conversion:1.0.0
   volumes:
-    - "/path/to/file-conversion-service:/app"
     - ./data/files:/share
-  ports:
-   - 127.0.0.1:7789:80
 ```
+
+Add rules to the `dispatcher.ex` to dispatch requests to the DOCX conversion service.
+
+```ex
+match "/files/:id/convert" do
+  Proxy.forward conn, [], "http://docx-conversion/files/" <> id <> "/convert"
+end
+```
+
+## Reference
+### Configuration
+The following environment variables can be optionally configured:
+ - `FILE_RESOURCE_BASE_URI` [string]: The base of the URI for new file resources (default `http://themis.vlaanderen.be/id/bestand/`)
+
+### API
+
+#### POST `/files/:id/convert`
+
+Request the conversion of the DOCX file to PDF.
+
+#### Response
+##### 201 Created
+
+On successful conversion of the provided file, with the following body containing the ID of the newly created converted file:
+
+```json
+{
+	"data": [
+		{
+			"attributes": {
+				"uri": "http://themis.vlaanderen.be/id/bestand/$ID"
+			},
+			"id": "$ID",
+			"type": "files"
+		}
+	]
+}
+```
+
+##### 400 Bad Request
+- If the provided file is not a DOCX file
+- If the service failed to convert the provided file to PDF
+
+#### 404 Not Found
+- If the provided file ID does not match a known file in the system
 
 ### Architecture decisions
 
