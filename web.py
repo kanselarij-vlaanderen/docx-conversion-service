@@ -3,6 +3,7 @@ import os.path
 from flask import g, json, request, make_response, redirect
 from helpers import logger, generate_uuid
 from sudo_query import query, update # !
+from .config import UNOSERVER_HOST, UNOSERVER_PORT, FILE_RESOURCE_BASE_URI, JSONAPI_FILES_TYPE
 from lib.query_util import result_to_records
 from lib.file import construct_insert_file_query, \
     construct_get_file_query, \
@@ -12,11 +13,6 @@ from lib.file import construct_insert_file_query, \
 from lib.file_provenance import construct_set_file_source
 from unoserver import converter
 
-UNOSERVER_HOST = "127.0.0.1"
-UNOSERVER_PORT = "2002"
-
-FILE_RESOURCE_BASE = "http://example.com/file"
-JSONAPI_FILES_TYPE = "files"
 
 TEMPORARY_SUDO_GRAPH = "http://mu.semte.ch/graphs/organizations/kanselarij"
 
@@ -45,7 +41,7 @@ def pieces_get(file_id):
         "size": os.path.getsize(target_path),
         "extension": target_ext
     }
-    file["uri"] = FILE_RESOURCE_BASE + "/" + file["uuid"]
+    file["uri"] = f"{FILE_RESOURCE_BASE_URI.rstrip('/')}/{file['uuid']}"
     physical_file = {
         "uri": target_uri,
         "uuid": target_uuid,
