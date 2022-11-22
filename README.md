@@ -9,7 +9,7 @@ Add the following snippet to your `docker-compose.yml` file to include the DOCX 
 
 ```yml
 docx-conversion:
-  image: kanselarij/docx-conversion:1.0.0
+  image: kanselarij/docx-conversion-service
   volumes:
     - ./data/files:/share
 ```
