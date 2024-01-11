@@ -1,0 +1,30 @@
+{
+  "name": "docx-to-pdf-conversion-via-graph-api-poc",
+  "version": "0.0.0",
+  "description": "A POC to convert DOCX files to PDF using the Microsoft Graph API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergiofenoll/docx-to-pdf-conversion-via-graph-api-poc.git"
+  },
+  "keywords": [
+    "poc",
+    "microservice",
+    "mu-semtech",
+    "semantic.works"
+  ],
+  "author": "Sergio Fenoll",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sergiofenoll/docx-to-pdf-conversion-via-graph-api-poc/issues"
+  },
+  "homepage": "https://github.com/sergiofenoll/docx-to-pdf-conversion-via-graph-api-poc#readme",
+  "dependencies": {
+    "@azure/identity": "^4.0.0",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "isomorphic-fetch": "^3.0.0"
+  }
+}
