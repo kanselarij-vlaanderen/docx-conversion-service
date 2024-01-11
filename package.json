@@ -17,7 +17,7 @@
     "semantic.works"
   ],
   "author": "Sergio Fenoll",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sergiofenoll/docx-to-pdf-conversion-via-graph-api-poc/issues"
   },
