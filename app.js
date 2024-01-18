@@ -4,11 +4,6 @@ import { StreamUpload, LargeFileUploadTask } from "@microsoft/microsoft-graph-cl
 import { FILE_JSONAPI_TYPE, USER_ID, MS_GRAPH_CLIENT as client } from './cfg';
 import { getFile, setFileSource, storeFile } from './lib/file';
 
-
-app.get('/', function(_req, res) {
-  res.send('Hello mu-javascript-template');
-});
-
 app.post('/files/:id/convert', async (req, res) => {
   const fileId = req.params.id;
   const file = await getFile(fileId);
