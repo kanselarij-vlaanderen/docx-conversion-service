@@ -1,7 +1,7 @@
 import { app, errorHandler } from 'mu';
 import fs from 'fs';
 import { StreamUpload, LargeFileUploadTask } from "@microsoft/microsoft-graph-client";
-import { FILE_JSONAPI_TYPE, USER_ID, MS_GRAPH_CLIENT as client } from './cfg';
+import { FILE_JSONAPI_TYPE, SITE_ID, MS_GRAPH_CLIENT as client } from './cfg';
 import { getFile, setFileSource, storeFile } from './lib/file';
 
 app.post('/files/:id/convert', async (req, res) => {
@@ -17,7 +17,7 @@ app.post('/files/:id/convert', async (req, res) => {
     }
     const uploadSession = await LargeFileUploadTask.createUploadSession(
       client,
-      `/users/${USER_ID}/drive/root:/${file.id}.${file.extension}:/createUploadSession`,
+      `/sites/${SITE_ID}/drive/root:/${file.id}.${file.extension}:/createUploadSession`,
       uploadSessionPayload,
     );
     const stats = fs.statSync(file.path);
@@ -42,14 +42,14 @@ app.post('/files/:id/convert', async (req, res) => {
   }
 
   const buffer = await client
-        .api(`/users/${USER_ID}/drive/root:/${file.id}.${file.extension}:/content?format=pdf`)
+        .api(`/sites/${SITE_ID}/drive/root:/${file.id}.${file.extension}:/content?format=pdf`)
         .get();
 
   const newFile = await storeFile(`${file.id}.pdf`, buffer);
   await setFileSource(file.uri, newFile.uri);
 
   await client
-    .api(`/users/${USER_ID}/drive/root:/${file.id}.${file.extension}`)
+    .api(`/sites/${SITE_ID}/drive/root:/${file.id}.${file.extension}`)
     .delete();
 
   return res

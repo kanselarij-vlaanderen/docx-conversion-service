@@ -28,7 +28,7 @@ The following environment variables are required for this service to work:
  - `TENANT_ID` [string]: The tenant ID of the Azure Active Directory where the application exists
  - `CLIENT_ID` [string]: The client ID of the Azure application
  - `CLIENT_SECRET` [string]: The client secret of the Azure application
- - `USER_ID` [string]: The id of the user that OneDrive will be used
+ - `SITE_ID` [string]: The id of the Sharepoint site that will be used
 The following environment variables can be optionally configured:
  - `MU_APPLICATION_FILE_STORAGE_PATH` [string]: The path where you want to store the converted PDF files. It will but a subpath from `/share/` (default `converted-docx`)
  - `FILE_RESOURCE_BASE_URI` [string]: The base of the URI for new file resources (default `http://themis.vlaanderen.be/id/bestand/`)
@@ -68,6 +68,6 @@ For development on this service, it's useful to know about the Microsoft Graph A
 - [Delete a file](https://learn.microsoft.com/en-us/graph/api/driveitem-delete?view=graph-rest-1.0&tabs=javascript)
 
 Your Azure application requires the following **application permissions**:
-- `Files.ReadWrite.All`
+- `Sites.Selected`
 
 If you don't have access to an existing Azure application, Microsoft has a Developer Program that gives you access to a free Azure Active Directory and an Office administrator account, so that you can create the necessary application and user. For a detailed explanation check [this tutorial](docs/setting-up-microsoft-developer-program.md).

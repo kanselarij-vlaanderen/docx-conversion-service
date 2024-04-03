@@ -16,7 +16,7 @@ function rstrip(value, strippedCharacters) {
 }
 
 // Env vars
-export const USER_ID = process.env.USER_ID;
+const SITE_ID = process.env.SITE_ID;
 const TENANT_ID = process.env.TENANT_ID;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -31,11 +31,16 @@ if (!fs.existsSync(STORAGE_PATH)){
 const FILE_RESOURCE_BASE_URI = rstrip(process.env.FILE_RESOURCE_BASE_URI ?? "http://themis.vlaanderen.be/id/bestand", "/")
 const FILE_JSONAPI_TYPE = process.env.FILE_JSONAPI_TYPE ?? "files"
 
-if ([USER_ID, TENANT_ID, CLIENT_ID, CLIENT_SECRET].some((envVar) => envVar === undefined)) {
+if ([
+  SITE_ID,
+  TENANT_ID,
+  CLIENT_ID,
+  CLIENT_SECRET
+].some((envVar) => envVar === undefined)) {
   console.warn(
     "Required environment variables were not set. Execution cannot proceed, logging variables and exiting."
   );
-  console.warn(`USER_ID: "${USER_ID}"`);
+  console.warn(`SITE_ID: "${SITE_ID}"`);
   console.warn(`TENANT_ID: "${TENANT_ID}"`);
   console.warn(`CLIENT_ID: "${CLIENT_ID}"`);
   console.warn(`CLIENT_SECRET: "${CLIENT_SECRET}"`);
@@ -58,6 +63,7 @@ const MS_GRAPH_CLIENT = Client.initWithMiddleware({
 export {
   GRAPH_CLIENT_DEBUG_LOGGING,
   MS_GRAPH_CLIENT,
+  SITE_ID,
   STORAGE_PATH,
   FILE_RESOURCE_BASE_URI,
   FILE_JSONAPI_TYPE,
