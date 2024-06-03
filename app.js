@@ -45,7 +45,7 @@ app.post('/files/:id/convert', async (req, res) => {
         .api(`/sites/${SITE_ID}/drive/root:/${file.id}.${file.extension}:/content?format=pdf`)
         .get();
 
-  const newFile = await storeFile(`${file.id}.pdf`, buffer);
+  const newFile = await storeFile(`${file.id}.pdf`, buffer, file.isDraftFile);
   await setFileSource(file.uri, newFile.uri);
 
   await client
