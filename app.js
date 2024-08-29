@@ -36,8 +36,7 @@ app.post("/files/:id/convert", async (req, res, next) => {
       ],
     });
   } catch (err) {
-    console.log(`Error converting DOCX file: ${JSON.stringify(err)}`);
-    console.log(err);
+    console.log(`Error converting DOCX file: ${err.message}`);
     return next({ message: JSON.stringify(err), status: 500 });
   }
 });
