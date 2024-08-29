@@ -1,6 +1,6 @@
 {
   "name": "docx-to-pdf-conversion-via-graph-api-poc",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A POC to convert DOCX files to PDF using the Microsoft Graph API",
   "main": "app.js",
   "scripts": {
