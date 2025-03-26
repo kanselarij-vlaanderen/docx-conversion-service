@@ -6,11 +6,11 @@ import { execWithRetry } from "./lib/util";
 import { deleteFile, downloadPdf, uploadFile } from "./lib/graph-api";
 
 app.post("/files/:id/convert", async (req, res, next) => {
-  const fileId = req.params.id;
-  const file = await getFile(fileId);
-  file.path = file.physicalUri.replace("share://", "/share/");
-
   try {
+    const fileId = req.params.id;
+    const file = await getFile(fileId);
+    file.path = file.physicalUri.replace("share://", "/share/");
+
     const stats = fs.statSync(file.path);
     file.size = stats.size;
     const readStream = fs.createReadStream(file.path);
