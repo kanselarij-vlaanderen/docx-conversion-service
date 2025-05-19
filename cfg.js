@@ -21,6 +21,13 @@ const TENANT_ID = process.env.TENANT_ID;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const GRAPH_CLIENT_DEBUG_LOGGING = isTruthy(process.env.GRAPH_CLIENT_DEBUG_LOGGING);
+const STATUS_POLLING_CRON_PATTERN = process.env.STATUS_POLLING_CRON_PATTERN || '0 0 7 * * *'; 
+const EMAIL_FROM_ADDRESS = process.env.EMAIL_FROM_ADDRESS ?? 'noreply@kaleidos.vlaanderen.be';
+const EMAIL_TO_ADDRESS_ON_FAILURE = process.env.EMAIL_TO_ADDRESS_ON_FAILURE ?? '';
+
+const RESOURCE_BASE_URI  = 'http://themis.vlaanderen.be';
+const EMAIL_GRAPH_URI = "http://mu.semte.ch/graphs/system/email";
+const EMAIL_OUTBOX_URI = "http://themis.vlaanderen.be/id/mail-folders/d9a415a4-b5e5-41d0-80ee-3f85d69e318c";
 
 const RELATIVE_STORAGE_PATH = rstrip(process.env.MU_APPLICATION_FILE_STORAGE_PATH ?? "converted-docx", "/")
 const STORAGE_PATH = `/share/${RELATIVE_STORAGE_PATH}`;
@@ -67,4 +74,10 @@ export {
   STORAGE_PATH,
   FILE_RESOURCE_BASE_URI,
   FILE_JSONAPI_TYPE,
+  STATUS_POLLING_CRON_PATTERN,
+  EMAIL_FROM_ADDRESS,
+  EMAIL_TO_ADDRESS_ON_FAILURE,
+  RESOURCE_BASE_URI,
+  EMAIL_GRAPH_URI,
+  EMAIL_OUTBOX_URI
 }

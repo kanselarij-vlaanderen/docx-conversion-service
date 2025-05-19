@@ -1,9 +1,21 @@
 import { app, errorHandler } from "mu";
 import fs from "fs";
-import { FILE_JSONAPI_TYPE } from "./cfg";
+import { CronJob } from "cron";
+import { FILE_JSONAPI_TYPE, STATUS_POLLING_CRON_PATTERN } from "./cfg";
 import { getFile, setFileSource, storeFile } from "./lib/file";
 import { execWithRetry } from "./lib/util";
-import { deleteFile, downloadPdf, uploadFile } from "./lib/graph-api";
+import { deleteFile, downloadPdf, uploadFile, checkDefaultDrive } from "./lib/graph-api";
+import { createEmailOnFailure } from './lib/email';
+
+new CronJob(
+	STATUS_POLLING_CRON_PATTERN,
+	() => {
+    console.log(`Checking Site_id status triggered by cron job at ${new Date().toISOString()}`);
+    pollDefaultDrive();
+  }, // onTick
+	null, // onComplete
+	true, // start
+);
 
 app.post("/files/:id/convert", async (req, res, next) => {
   try {
@@ -49,4 +61,21 @@ app.post("/files/:id/convert", async (req, res, next) => {
   }
 });
 
+async function pollDefaultDrive() {
+  try {
+    await checkDefaultDrive();
+    console.log('Default drive ok');
+  } catch(e) {
+    console.error("Default drive is not ok, document conversions will fail");
+    await createEmailOnFailure(
+      "The default drive is unreachable in docx-conversion",
+      `environment: NA, site is same for both\t\nDetail of error: ${e?.message || "no details available"}\t\n
+      Docx conversions will no longer work with this site_id!`
+    );
+  }
+}
+
 app.use(errorHandler);
+
+// check once on start, further checks based on cronjob
+pollDefaultDrive();
