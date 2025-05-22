@@ -36,7 +36,16 @@ app.post("/files/:id/convert", async (req, res, next) => {
 
     await execWithRetry(() => uploadFile(file, readStream));
 
-    const buffer = await execWithRetry(() => downloadPdf(file));
+    let buffer;
+    try {
+      buffer = await execWithRetry(() => downloadPdf(file));
+    } catch (error) {
+      console.log('!!!! Failed to download the pdf file !!!!');
+      // if the download takes 45 seconds it will receive a timeout
+      // clean up the file when download fails
+      await execWithRetry(() => deleteFile(file));
+      throw error;
+    }
 
     const newFile = await storeFile(`${file.id}.pdf`, buffer, file.isDraftFile);
     await setFileSource(file.uri, newFile.uri);
