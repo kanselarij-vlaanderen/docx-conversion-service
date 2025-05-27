@@ -27,7 +27,7 @@ const EMAIL_TO_ADDRESS_ON_FAILURE = process.env.EMAIL_TO_ADDRESS_ON_FAILURE ?? '
 
 const RESOURCE_BASE_URI  = 'http://themis.vlaanderen.be';
 const EMAIL_GRAPH_URI = "http://mu.semte.ch/graphs/system/email";
-const EMAIL_OUTBOX_URI = "http://themis.vlaanderen.be/id/mail-folders/d9a415a4-b5e5-41d0-80ee-3f85d69e318c";
+const EMAIL_OUTBOX_URI = "http://themis.vlaanderen.be/id/mail-folders/4296e6af-7d4f-423d-ba89-ed4cbbb33ae7";
 
 const RELATIVE_STORAGE_PATH = rstrip(process.env.MU_APPLICATION_FILE_STORAGE_PATH ?? "converted-docx", "/")
 const STORAGE_PATH = `/share/${RELATIVE_STORAGE_PATH}`;
