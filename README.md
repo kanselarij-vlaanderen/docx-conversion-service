@@ -12,6 +12,8 @@ docx-conversion:
   image: kanselarij/docx-conversion-service
   volumes:
     - ./data/files:/share
+  environment:
+    ALLOW_MU_AUTH_SUDO: "true"
 ```
 
 Add rules to the `dispatcher.ex` to dispatch requests to the DOCX conversion service.
