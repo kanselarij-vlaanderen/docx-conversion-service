@@ -1,6 +1,6 @@
 import "isomorphic-fetch"; // Needed for microsoft-graph-client to work
 import { Client } from "@microsoft/microsoft-graph-client";
-import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
+import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials/index.js";
 import { ClientSecretCredential } from "@azure/identity";
 import fs from 'fs';
 
